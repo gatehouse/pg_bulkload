@@ -219,7 +219,6 @@ IndexSpoolEnd(Spooler *self, bool reindex)
 		{
 			_bt_mergebuild(self, spools[i]);
 			_bt_spooldestroy(spools[i]);
-			UnlockRelation(spools[i]->index, AccessExclusiveLock);
 		}
 		else if (reindex)
 		{
