@@ -113,7 +113,7 @@ BufferedWriterClose(BufferedWriter *self, bool onError)
 		ret.num_dup_old = self->spooler.dup_old;
 
 		if (self->base.rel)
-			heap_close(self->base.rel, AccessExclusiveLock);
+			heap_close(self->base.rel, NoLock);
 
 		pfree(self);
 	}
