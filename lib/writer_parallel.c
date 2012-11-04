@@ -362,9 +362,12 @@ connect_to_localhost(void)
 	char	sql[1024];
 	char   *host;
 	char	dbName[1024];
-
+	
+#ifndef _WIN32
+	/* 2012-11-04 This has been shown to be a problem for Windows. It does cause a crash. Not furhter investigated */
 	/* Also ensure backend isn't confused by this environment var. */
 	setenv("PGCLIENTENCODING", GetDatabaseEncodingName(), 1);
+#endif
 
 #ifdef HAVE_UNIX_SOCKETS
 	host = (UnixSocketDir == NULL || UnixSocketDir[0] == '\0') ?
