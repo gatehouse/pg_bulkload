@@ -24,7 +24,21 @@ set( pg_bulkload_lib_SOURCES
 	../lib/writer_parallel.c
 )
 
-add_library(pg_bulkload_lib SHARED ${pg_bulkload_lib_SOURCES})
+#	pgut/pgut-be.c
+#	pgut/pgut-ipc.c
+#	../cmake/readme.txt
 
-set_target_properties( pg_bulkload_lib PROPERTIES PREFIX pg_ OUTPUT_NAME bulkload )
+
+add_library(${PROJECT_NAME} SHARED ${pg_bulkload_lib_SOURCES})
+
+set_target_properties( ${PROJECT_NAME} PROPERTIES PREFIX pg_ OUTPUT_NAME bulkload )
+target_link_libraries(${PROJECT_NAME} pq )
+#pgport
+
+IF (WIN32)
+ELSE()
+INSTALL( TARGETS ${PROJECT_NAME} DESTINATION /usr/lib/postgresql/${PG_VERSION}/lib/ )
+INSTALL( FILES ../share/extension/pg_bulkload.control DESTINATION /usr/share/postgresql/${PG_VERSION}/extension/ )
+INSTALL( FILES ../share/extension/pg_bulkload--1.0.sql DESTINATION /usr/share/postgresql/${PG_VERSION}/extension/ )
+ENDIF()
 

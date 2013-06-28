@@ -18,7 +18,7 @@ add_executable( pg_bulkload_bin ${pg_bulkload_bin_SOURCES})
 IF (WIN32)
 	target_link_libraries(pg_bulkload_bin ws2_32 libpq libpgport libintl-8 )
 ELSE (WIN32)
-	target_link_libraries(pg_bulkload_bin pq pgport)
+	target_link_libraries(pg_bulkload_bin pq pgport.a pgcommon.a)
 ENDIF (WIN32)
 
 

@@ -77,6 +77,8 @@ static void LoaderCreateLockFile(const char *filename,
 								 bool amPostmaster,
 								 bool isDDLock, const char *refName);
 
+bool PageHeaderIsValid(PageHeader page);
+
 /**
  * @brief Entry point for recovery process
  *

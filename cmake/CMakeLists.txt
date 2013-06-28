@@ -6,6 +6,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(pg_bulkload)
 
+SET( PG_VERSION 9.3 )
+
 include_directories(. ../include/ )
 
 IF (WIN32)
@@ -27,11 +29,12 @@ ELSE (WIN32)
 	include_directories( 
 		/usr/include/postgresql/
 		/usr/include/postgresql/internal/
-		/usr/include/postgresql/9.2/server/
+		/usr/include/postgresql/${PG_VERSION}/server/
 	)
 
 ENDIF (WIN32)
 
 ADD_SUBDIRECTORY(../bin bin)
 ADD_SUBDIRECTORY(../lib lib)
+
 

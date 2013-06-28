@@ -41,8 +41,10 @@ static void unused_bt_leafbuild(BTSpool *, BTSpool *);
 #define _bt_spool			unused_bt_spool
 #define _bt_leafbuild		unused_bt_leafbuild
 
-#if PG_VERSION_NUM >= 90300
+#if PG_VERSION_NUM >= 90400
 #error unsupported PostgreSQL version
+#elif PG_VERSION_NUM >= 90300
+#include "nbtree/nbtsort-9.3.c"
 #elif PG_VERSION_NUM >= 90200
 #include "nbtree/nbtsort-9.2.c"
 #elif PG_VERSION_NUM >= 90100

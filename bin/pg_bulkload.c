@@ -741,3 +741,4 @@ FindUnquotedChar(char *str, char target, char quote, char escape)
 
 	return NULL;
 }
+
