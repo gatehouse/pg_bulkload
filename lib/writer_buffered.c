@@ -1,7 +1,7 @@
 /*
  * pg_bulkload: lib/writer_buffered.c
  *
- *	  Copyright (c) 2007-2011, NIPPON TELEGRAPH AND TELEPHONE CORPORATION
+ *	  Copyright (c) 2007-2012, NIPPON TELEGRAPH AND TELEPHONE CORPORATION
  */
 
 #include "postgres.h"
@@ -113,7 +113,7 @@ BufferedWriterClose(BufferedWriter *self, bool onError)
 		ret.num_dup_old = self->spooler.dup_old;
 
 		if (self->base.rel)
-			heap_close(self->base.rel, NoLock);
+			heap_close(self->base.rel, AccessExclusiveLock);
 
 		pfree(self);
 	}
