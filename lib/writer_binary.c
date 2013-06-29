@@ -21,6 +21,7 @@
 #include "pg_strutil.h"
 #include "storage/fd.h"
 #include "writer.h"
+#include "access/htup_details.h"
 
 #ifndef UINT16_MAX
 #define UINT16_MAX             (65535U)

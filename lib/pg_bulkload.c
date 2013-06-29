@@ -15,6 +15,7 @@
 
 #include "access/heapam.h"
 #include "access/reloptions.h"
+#include "access/htup_details.h"
 #include "commands/dbcommands.h"
 #include "commands/tablecmds.h"
 #include "funcapi.h"

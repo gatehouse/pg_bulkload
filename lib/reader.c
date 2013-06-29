@@ -26,6 +26,9 @@
 #include "utils/resowner.h"
 #include "utils/syscache.h"
 #include "utils/typcache.h"
+#include "access/htup.h"
+#include "access/htup_details.h"
+#include "storage/fd.h"
 
 #include "logger.h"
 #include "pg_profile.h"

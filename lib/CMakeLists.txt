@@ -22,18 +22,20 @@ set( pg_bulkload_lib_SOURCES
 	../lib/writer.c
 	../lib/writer_direct.c
 	../lib/writer_parallel.c
+	../lib/pgut/pgut-be.c
+	../lib/pgut/pgut-ipc.c
+	../cmake/readme.txt
 )
-
-#	pgut/pgut-be.c
-#	pgut/pgut-ipc.c
-#	../cmake/readme.txt
-
 
 add_library(${PROJECT_NAME} SHARED ${pg_bulkload_lib_SOURCES})
 
+IF (WIN32)
+ELSE()
+ADD_DEFINITIONS( -g -Wall )
+ENDIF()
+
 set_target_properties( ${PROJECT_NAME} PROPERTIES PREFIX pg_ OUTPUT_NAME bulkload )
-target_link_libraries(${PROJECT_NAME} pq )
-#pgport
+target_link_libraries(${PROJECT_NAME} pq pgport.a pgcommon.a)
 
 IF (WIN32)
 ELSE()

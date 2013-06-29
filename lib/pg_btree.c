@@ -15,6 +15,7 @@
 #include "access/nbtree.h"
 #include "access/transam.h"
 #include "access/xact.h"
+#include "access/htup_details.h"
 #include "catalog/index.h"
 #include "executor/executor.h"
 #include "storage/fd.h"
@@ -31,7 +32,7 @@
 
 #include "logger.h"
 
-static BTSpool *unused_bt_spoolinit(Relation, bool, bool);
+static BTSpool *unused_bt_spoolinit(Relation, Relation, bool, bool);
 static void unused_bt_spooldestroy(BTSpool *);
 static void unused_bt_spool(IndexTuple, BTSpool *);
 static void unused_bt_leafbuild(BTSpool *, BTSpool *);
@@ -180,6 +181,7 @@ IndexSpoolBegin(ResultRelInfo *relinfo, bool enforceUnique)
 	int				numIndices = relinfo->ri_NumIndices;
 	RelationPtr		indices = relinfo->ri_IndexRelationDescs;
 	BTSpool		  **spools;
+	Relation heapRelation = relinfo->ri_RelationDesc;
 
 	spools = palloc(numIndices * sizeof(BTSpool *));
 	for (i = 0; i < numIndices; i++)
@@ -190,7 +192,7 @@ IndexSpoolBegin(ResultRelInfo *relinfo, bool enforceUnique)
 		{
 			elog(DEBUG1, "pg_bulkload: spool \"%s\"",
 				RelationGetRelationName(indices[i]));
-			spools[i] = _bt_spoolinit(indices[i],
+			spools[i] = _bt_spoolinit(heapRelation,indices[i],
 					enforceUnique ? indices[i]->rd_index->indisunique: false,
 					false);
 			spools[i]->isunique = indices[i]->rd_index->indisunique;
@@ -385,8 +387,8 @@ _bt_mergebuild(Spooler *self, BTSpool *btspool)
 		merge ? "with" : "without",
 		wstate.btws_use_wal ? "with" : "without");
 
-	/* Assign a new file node. */
-	RelationSetNewRelfilenode(wstate.index, InvalidTransactionId);
+	/* Assign a new file node. NB!! 2013-06-29 added final parameter, and it is probably invalid. */
+	RelationSetNewRelfilenode(wstate.index, InvalidTransactionId, InvalidTransactionId);
 
 	if (merge || (btspool->isunique && self->max_dup_errors > 0))
 	{

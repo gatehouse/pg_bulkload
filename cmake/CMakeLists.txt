@@ -12,16 +12,16 @@ include_directories(. ../include/ )
 
 IF (WIN32)
 
-	ADD_DEFINITIONS( -D_WIN32_WINNT=0x0501 ) 
-	include_directories( 
-		"c:/Program Files/PostgreSQL/9.2/include" 
-		"c:/Program Files/PostgreSQL/9.2/include/server" 
-		"c:/Program Files/PostgreSQL/9.2/include/internal" 
-		"c:/Program Files/PostgreSQL/9.2/include/server/port" 
-		"c:/Program Files/PostgreSQL/9.2/include/server/port/win32" 
-		"c:/Program Files/PostgreSQL/9.2/include/server/port/win32_msvc" 
+	ADD_DEFINITIONS( -D_WIN32_WINNT=0x0501 )
+	include_directories(
+		"c:/Program Files/PostgreSQL/${PG_VERSION}/include"
+		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/server"
+		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/internal"
+		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/server/port"
+		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/server/port/win32"
+		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/server/port/win32_msvc"
 	)
-	LINK_DIRECTORIES("c:/Program Files/PostgreSQL/9.2/lib")
+	LINK_DIRECTORIES("c:/Program Files/PostgreSQL/${PG_VERSION}/lib")
 
 
 ELSE (WIN32)

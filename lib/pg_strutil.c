@@ -25,6 +25,7 @@
 
 #include "pg_strutil.h"
 #include "pgut/pgut-be.h"
+#include "access/htup_details.h"
 
 char *
 QuoteString(char *str)

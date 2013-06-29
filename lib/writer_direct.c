@@ -14,6 +14,7 @@
 #include "access/heapam.h"
 #include "access/transam.h"
 #include "access/tuptoaster.h"
+#include "access/heapam_xlog.h"
 #include "catalog/catalog.h"
 #include "catalog/namespace.h"
 #include "executor/executor.h"
@@ -22,6 +23,7 @@
 #include "storage/fd.h"
 #include "utils/builtins.h"
 #include "utils/rel.h"
+#include "common/relpath.h"
 
 #include "logger.h"
 #include "pg_loadstatus.h"
@@ -146,7 +148,7 @@ DirectWriterInit(DirectWriter *self)
 
 	/* Initialize first block */
 	PageInit(GetCurrentPage(self), BLCKSZ, 0);
-	PageSetTLI(GetCurrentPage(self), ThisTimeLineID);
+//NB!!	PageSetTLI(GetCurrentPage(self), ThisTimeLineID);
 
 	/* Obtain transaction ID and command ID. */
 	self->xid = GetCurrentTransactionId();
@@ -236,7 +238,7 @@ DirectWriterInsert(DirectWriter *self, HeapTuple tuple)
 
 		/* Initialize current block */
 		PageInit(page, BLCKSZ, 0);
-		PageSetTLI(page, ThisTimeLineID);
+//NB!!		PageSetTLI(page, ThisTimeLineID);
 	}
 
 	tuple->t_data->t_infomask &= ~(HEAP_XACT_MASK);
