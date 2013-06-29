@@ -27,7 +27,6 @@
 #include "utils/syscache.h"
 #include "utils/typcache.h"
 #include "access/htup.h"
-#include "access/htup_details.h"
 #include "storage/fd.h"
 
 #include "logger.h"
@@ -35,6 +34,9 @@
 #include "pg_strutil.h"
 #include "pgut/pgut-be.h"
 #include "reader.h"
+#if PG_VERSION_NUM >= 90300
+#include "access/htup_details.h"
+#endif
 
 #define DEFAULT_MAX_PARSE_ERRORS		0
 

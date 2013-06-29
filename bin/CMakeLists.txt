@@ -16,9 +16,17 @@ set( pg_bulkload_bin_SOURCES
 add_executable( pg_bulkload_bin ${pg_bulkload_bin_SOURCES})
 
 IF (WIN32)
+
 	target_link_libraries(pg_bulkload_bin ws2_32 libpq libpgport libintl-8 )
+
 ELSE (WIN32)
-	target_link_libraries(pg_bulkload_bin pq pgport.a pgcommon.a)
+
+	IF (${PG_VERSION} GREATER 9.2)
+		target_link_libraries(${PROJECT_NAME} pq pgport.a pgcommon.a)
+	ELSE()
+		target_link_libraries(${PROJECT_NAME} pq pgport.a)
+	ENDIF()
+	
 ENDIF (WIN32)
 
 

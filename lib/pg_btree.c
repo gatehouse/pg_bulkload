@@ -15,7 +15,6 @@
 #include "access/nbtree.h"
 #include "access/transam.h"
 #include "access/xact.h"
-#include "access/htup_details.h"
 #include "catalog/index.h"
 #include "executor/executor.h"
 #include "storage/fd.h"
@@ -25,6 +24,9 @@
 #include "utils/lsyscache.h"
 #include "utils/memutils.h"
 #include "utils/tqual.h"
+#if PG_VERSION_NUM >= 90300
+#include "access/htup_details.h"
+#endif
 
 #if PG_VERSION_NUM >= 80400
 #include "utils/snapmgr.h"
@@ -32,7 +34,11 @@
 
 #include "logger.h"
 
+#if PG_VERSION_NUM >= 90300
 static BTSpool *unused_bt_spoolinit(Relation, Relation, bool, bool);
+#else
+static BTSpool *unused_bt_spoolinit(Relation, bool, bool);
+#endif
 static void unused_bt_spooldestroy(BTSpool *);
 static void unused_bt_spool(IndexTuple, BTSpool *);
 static void unused_bt_leafbuild(BTSpool *, BTSpool *);
@@ -181,7 +187,10 @@ IndexSpoolBegin(ResultRelInfo *relinfo, bool enforceUnique)
 	int				numIndices = relinfo->ri_NumIndices;
 	RelationPtr		indices = relinfo->ri_IndexRelationDescs;
 	BTSpool		  **spools;
+#if PG_VERSION_NUM >= 90300
+	// NB!! 2013-06-29. This is not known to be correct. Only a guess
 	Relation heapRelation = relinfo->ri_RelationDesc;
+#endif
 
 	spools = palloc(numIndices * sizeof(BTSpool *));
 	for (i = 0; i < numIndices; i++)
@@ -192,7 +201,11 @@ IndexSpoolBegin(ResultRelInfo *relinfo, bool enforceUnique)
 		{
 			elog(DEBUG1, "pg_bulkload: spool \"%s\"",
 				RelationGetRelationName(indices[i]));
-			spools[i] = _bt_spoolinit(heapRelation,indices[i],
+			spools[i] = _bt_spoolinit(
+#if PG_VERSION_NUM >= 90300
+			heapRelation,
+#endif
+			indices[i],
 					enforceUnique ? indices[i]->rd_index->indisunique: false,
 					false);
 			spools[i]->isunique = indices[i]->rd_index->indisunique;
@@ -388,7 +401,11 @@ _bt_mergebuild(Spooler *self, BTSpool *btspool)
 		wstate.btws_use_wal ? "with" : "without");
 
 	/* Assign a new file node. NB!! 2013-06-29 added final parameter, and it is probably invalid. */
-	RelationSetNewRelfilenode(wstate.index, InvalidTransactionId, InvalidTransactionId);
+	RelationSetNewRelfilenode(wstate.index, InvalidTransactionId
+#if PG_VERSION_NUM >= 90300
+	, InvalidTransactionId
+#endif
+	);
 
 	if (merge || (btspool->isunique && self->max_dup_errors > 0))
 	{

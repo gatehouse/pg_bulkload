@@ -29,18 +29,20 @@ set( pg_bulkload_lib_SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${pg_bulkload_lib_SOURCES})
 
-IF (WIN32)
-ELSE()
-ADD_DEFINITIONS( -g -Wall )
-ENDIF()
-
 set_target_properties( ${PROJECT_NAME} PROPERTIES PREFIX pg_ OUTPUT_NAME bulkload )
-target_link_libraries(${PROJECT_NAME} pq pgport.a pgcommon.a)
 
 IF (WIN32)
+
 ELSE()
-INSTALL( TARGETS ${PROJECT_NAME} DESTINATION /usr/lib/postgresql/${PG_VERSION}/lib/ )
-INSTALL( FILES ../share/extension/pg_bulkload.control DESTINATION /usr/share/postgresql/${PG_VERSION}/extension/ )
-INSTALL( FILES ../share/extension/pg_bulkload--1.0.sql DESTINATION /usr/share/postgresql/${PG_VERSION}/extension/ )
+
+	IF (${PG_VERSION} GREATER 9.2)
+		target_link_libraries(${PROJECT_NAME} pq pgport.a pgcommon.a)
+	ELSE()
+		target_link_libraries(${PROJECT_NAME} pq pgport.a)
+	ENDIF()
+
+	INSTALL( TARGETS ${PROJECT_NAME} DESTINATION /usr/lib/postgresql/${PG_VERSION}/lib/ )
+	INSTALL( FILES ../share/extension/pg_bulkload.control DESTINATION /usr/share/postgresql/${PG_VERSION}/extension/ )
+	INSTALL( FILES ../share/extension/pg_bulkload--1.0.sql DESTINATION /usr/share/postgresql/${PG_VERSION}/extension/ )
 ENDIF()
 

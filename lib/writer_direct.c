@@ -14,7 +14,6 @@
 #include "access/heapam.h"
 #include "access/transam.h"
 #include "access/tuptoaster.h"
-#include "access/heapam_xlog.h"
 #include "catalog/catalog.h"
 #include "catalog/namespace.h"
 #include "executor/executor.h"
@@ -23,7 +22,6 @@
 #include "storage/fd.h"
 #include "utils/builtins.h"
 #include "utils/rel.h"
-#include "common/relpath.h"
 
 #include "logger.h"
 #include "pg_loadstatus.h"
@@ -33,6 +31,11 @@
 #include "pg_profile.h"
 #include "pg_strutil.h"
 #include "pgut/pgut-be.h"
+
+#if PG_VERSION_NUM >= 90300
+#include "access/heapam_xlog.h"
+#include "common/relpath.h"
+#endif
 
 #if PG_VERSION_NUM < 80400
 

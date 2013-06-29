@@ -15,7 +15,6 @@
 
 #include "access/heapam.h"
 #include "access/reloptions.h"
-#include "access/htup_details.h"
 #include "commands/dbcommands.h"
 #include "commands/tablecmds.h"
 #include "funcapi.h"
@@ -38,6 +37,9 @@
 #include "pg_profile.h"
 #include "pg_strutil.h"
 #include "pgut/pgut-be.h"
+#if PG_VERSION_NUM >= 90300
+#include "access/htup_details.h"
+#endif
 
 PG_MODULE_MAGIC;
 

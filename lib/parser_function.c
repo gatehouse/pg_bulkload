@@ -12,7 +12,6 @@
 
 #include "access/heapam.h"
 #include "access/htup.h"
-#include "access/htup_details.h"
 #include "catalog/pg_proc.h"
 #include "catalog/pg_type.h"
 #include "executor/executor.h"
@@ -29,6 +28,9 @@
 #include "pg_strutil.h"
 #include "reader.h"
 #include "pgut/pgut-be.h"
+#if PG_VERSION_NUM >= 90300
+#include "access/htup_details.h"
+#endif
 
 typedef struct FunctionParser
 {
