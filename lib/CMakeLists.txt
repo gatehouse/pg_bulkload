@@ -25,6 +25,17 @@ set( pg_bulkload_lib_SOURCES
 	../lib/pgut/pgut-be.c
 	../lib/pgut/pgut-ipc.c
 	../cmake/readme.txt
+	
+	../include/binary.h  
+	../include/common.h  
+	../include/logger.h  
+	../include/pg_btree.h  
+	../include/pg_bulkload.h  
+	../include/pg_loadstatus.h  
+	../include/pg_profile.h  
+	../include/pg_strutil.h  
+	../include/reader.h  
+	../include/writer.h
 )
 
 add_library(${PROJECT_NAME} SHARED ${pg_bulkload_lib_SOURCES})
