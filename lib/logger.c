@@ -118,14 +118,26 @@ LoggerLog(int elevel, const char *fmt,...)
 	}
 }
 
+#ifdef _WIN32
+#else
 void
-LoggerClose(void)
+DeleteFile(const char *filename)
+{
+	unlink(filename);
+}
+#endif
+
+void
+LoggerClose(bool delete_log)
 {
 	if (logger.fp != NULL && FreeFile(logger.fp) < 0)
 		ereport(WARNING,
 				(errcode_for_file_access(),
 				 errmsg("could not close loader log file \"%s\": %m",
 						logger.logfile)));
+
+	if (delete_log && logger.logfile != NULL)
+		DeleteFile(logger.logfile);
 
 	if (logger.logfile != NULL)
 		pfree(logger.logfile);

@@ -1,4 +1,18 @@
 
+2013-07-31 pg_bulkload
+----------------------
+Added option CLEAR_LOG=TRUE which will delete the log file if the operation is successfull.
+
+This is of value when using multiple bulkload operations, e.g. 5 different tables every minute.
+
+
+2013-06-29 pg_bulkload
+----------------------
+Built for PostgreSQL 9.3 on Ubuntu 13.04
+
+Merged differences (manually) from pg_bulkload 3.1.3
+
+
 2013-01-04 pg_bulkload
 ----------------------
 Added support for cmake.
