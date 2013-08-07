@@ -27,11 +27,23 @@ set( pg_bulkload_lib_SOURCES
 	../cmake/readme.txt
 )
 
+IF (WIN32)
+
+set( pg_bulkload_lib_SOURCES
+	${pg_bulkload_lib_SOURCES}
+	../lib/pgut/pgut-pthread.c
+)
+
+ENDIF()
+
+
 add_library(${PROJECT_NAME} SHARED ${pg_bulkload_lib_SOURCES})
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES PREFIX pg_ OUTPUT_NAME bulkload )
 
 IF (WIN32)
+
+	target_link_libraries(${PROJECT_NAME} libpq postgres)
 
 ELSE()
 

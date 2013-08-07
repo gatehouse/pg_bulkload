@@ -325,7 +325,7 @@ BinaryParserParam(BinaryParser *self, const char *keyword, char *value)
 {
 	if (CompareKeyword(keyword, "COL"))
 	{
-		BinaryParam(&self->fields, &self->nfield, value, self->preserve_blanks, false);
+		BinaryParam1(&self->fields, &self->nfield, value, self->preserve_blanks, false);
 
 		if (self->fields[self->nfield - 1].character)
 			self->fields[self->nfield - 1].str =

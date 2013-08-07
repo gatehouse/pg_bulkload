@@ -21,7 +21,7 @@ IF (WIN32)
 		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/server/port/win32"
 		"c:/Program Files/PostgreSQL/${PG_VERSION}/include/server/port/win32_msvc"
 	)
-	LINK_DIRECTORIES("c:/Program Files/PostgreSQL/${PG_VERSION}/lib")
+	LINK_DIRECTORIES("c:/Program Files/PostgreSQL/${PG_VERSION}/lib" "c:/lang/w64/lib")
 
 
 ELSE (WIN32)

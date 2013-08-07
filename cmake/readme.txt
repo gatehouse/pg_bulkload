@@ -16,3 +16,4 @@ License:
 
 Packaging:
 - The package is the server package including the client. The client part should be simply copying the executable file to the relevant ubuntu installation and ensure libpq is installed.
+
