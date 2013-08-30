@@ -220,6 +220,8 @@ struct Filter
 	bool			tupledesc_matched;
 	Oid				fn_rettype;
 	Oid				collation;
+	bool			is_first_time_call;
+	char			*fn_extra;
 };
 
 extern bool tupledesc_match(TupleDesc dst_tupdesc, TupleDesc src_tupdesc);
