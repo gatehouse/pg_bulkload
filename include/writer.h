@@ -79,7 +79,7 @@ extern Writer *CreateBinaryWriter(void *opt);
 
 extern Writer *WriterCreate(char *type, bool multi_process);
 extern void WriterInit(Writer *self);
-extern WriterResult WriterClose(Writer *self, bool onError);
+extern WriterResult WriterClose(Writer *self, bool onError, bool clearOnOk);
 extern bool WriterParam(Writer *self, const char *keyword, char *value);
 extern void WriterDumpParams(Writer *self);
 

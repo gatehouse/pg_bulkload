@@ -364,9 +364,10 @@ connect_to_localhost(void)
 	char	dbName[1024];
 	char   *UnixSocketDir = NULL;
 
+#ifndef _WIN32
 	/* Also ensure backend isn't confused by this environment var. */
 	setenv("PGCLIENTENCODING", GetDatabaseEncodingName(), 1);
-
+#endif
 #ifdef HAVE_UNIX_SOCKETS
 	host = (UnixSocketDir == NULL || UnixSocketDir[0] == '\0') ?
 				DEFAULT_PGSOCKET_DIR :

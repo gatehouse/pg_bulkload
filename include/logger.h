@@ -20,12 +20,18 @@ typedef struct Logger	Logger;
 
 extern void CreateLogger(const char *path, bool verbose, bool writer);
 extern void LoggerLog(int elevel, const char *fmt,...);
-extern void LoggerClose(void);
+extern void LoggerClose(bool delete_log);
 
 /*
  * Utilitiy functions
  */
 
 extern char *tuple_to_cstring(TupleDesc tupdesc, HeapTuple tuple);
+
+#ifdef _WIN32
+#else
+void
+DeleteFile(const char *filename);
+#endif
 
 #endif   /* LOGGER_H_INCLUDED */

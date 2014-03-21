@@ -31,7 +31,7 @@ extern PGDLLIMPORT CommandDest		whereToSendOutput;
  * for MSVC. So, we define own entity of the variable and assume protocol
  * version is always 3.
  */
-ProtocolVersion	FrontendProtocol = 3;
+ProtocolVersion	FrontendProtocol = 3 << 16;
 #endif
 
 /* ========================================================================

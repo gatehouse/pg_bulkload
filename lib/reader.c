@@ -166,6 +166,10 @@ ReaderParam(Reader *rd, const char *keyword, char *target)
 					 errmsg("invalid encoding for parameter \"ENCODING\": \"%s\"",
 						target)));
 	}
+	else if (CompareKeyword(keyword, "CLEAR_LOG"))
+	{
+		rd->clear_log_on_ok = ParseBoolean(target);
+	}
 	else if (rd->parser == NULL ||
 			!ParserParam(rd->parser, keyword, target))
 		return false;

@@ -336,7 +336,7 @@ BinaryWriterParam(BinaryWriter *self, const char *keyword, char *value)
 	}
 	else if (CompareKeyword(keyword, "OUT_COL"))
 	{
-		BinaryParam(&self->fields, &self->nfield, value, false, true);
+		BinaryParam1(&self->fields, &self->nfield, value, false, true);
 	}
 	else
 		return false;	/* unknown parameter */
