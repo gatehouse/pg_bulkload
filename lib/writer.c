@@ -111,14 +111,23 @@ WriterDumpParams(Writer *self)
 }
 
 WriterResult
-WriterClose(Writer *self, bool onError)
+WriterClose(Writer *self, bool onError, bool clearOnOk)
 {
+	WriterResult result;
+
+	result = self->close(self, onError);
+
+	if (clearOnOk && !onError && self->dup_badfile != NULL)
+	{
+		DeleteFile(self->dup_badfile);
+	}
+
 	if (self->dup_badfile != NULL)
 		pfree(self->dup_badfile);
 
 	self->dup_badfile = NULL;
 
-	return self->close(self, onError);
+	return result;
 }
 
 char *

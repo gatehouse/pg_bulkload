@@ -362,7 +362,12 @@ connect_to_localhost(void)
 	char	sql[1024];
 	char   *host;
 	char	dbName[1024];
+	//char   *UnixSocketDir = NULL;
 
+#ifndef _WIN32
+	/* Also ensure backend isn't confused by this environment var. */
+	setenv("PGCLIENTENCODING", GetDatabaseEncodingName(), 1);
+#endif
 #ifdef HAVE_UNIX_SOCKETS
 
 #if PG_VERSION_NUM >= 90300

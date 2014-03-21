@@ -173,6 +173,7 @@ pg_bulkload(PG_FUNCTION_ARGS)
 	Datum			values[PG_BULKLOAD_COLS];
 	bool			nulls[PG_BULKLOAD_COLS];
 	HeapTuple		result;
+	bool			clear_log = false;
 
 	/* Build a tuple descriptor for our result type */
 	if (get_call_result_type(fcinfo, NULL, &tupdesc) != TYPEFUNC_COMPOSITE)
@@ -202,6 +203,9 @@ pg_bulkload(PG_FUNCTION_ARGS)
 	/* initialize reader */
 	ReaderInit(rd);
 
+	if (rd)
+		clear_log = rd->clear_log_on_ok;
+
 	/*
 	 * We need to split PG_TRY block because gcc optimizes if-branches with
 	 * longjmp codes too much. Local variables initialized in either branch
@@ -228,7 +232,7 @@ pg_bulkload(PG_FUNCTION_ARGS)
 		if (rd)
 			ReaderClose(rd, true);
 		if (wt)
-			WriterClose(wt, true);
+			WriterClose(wt, true, clear_log);
 		PG_RE_THROW();
 	}
 	PG_END_TRY();
@@ -297,7 +301,7 @@ pg_bulkload(PG_FUNCTION_ARGS)
 		 * close writer first and reader second because shmem_exit callback
 		 * is managed by a simple stack.
 		 */
-		ret = WriterClose(wt, false);
+		ret = WriterClose(wt, false, clear_log);
 		wt = NULL;
 		skip = ReaderClose(rd, false);
 		rd = NULL;
@@ -314,7 +318,7 @@ pg_bulkload(PG_FUNCTION_ARGS)
 
 		/* close writer first, and reader second */
 		if (wt)
-			WriterClose(wt, true);
+			WriterClose(wt, true, clear_log);
 		if (rd)
 			ReaderClose(rd, true);
 
@@ -355,7 +359,8 @@ pg_bulkload(PG_FUNCTION_ARGS)
 		"CPU %.2fs/%.2fu sec elapsed %.2f sec\n",
 		start, end, system, user, duration);
 
-	LoggerClose();
+	clear_log = clear_log && skip == 0 && count > 0 && parse_errors == 0; // && ret.num_dup_new == 0 && ret.num_dup_old == 0;
+	LoggerClose(clear_log);
 
 	result = heap_form_tuple(tupdesc, values, nulls);
 

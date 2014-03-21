@@ -177,6 +177,9 @@ struct Reader
 	 */
 	int64			parse_errors;	/**< number of parse errors ignored */
 	FILE		   *parse_fp;
+
+	/* Delete log file if everything is ok */
+	bool			clear_log_on_ok;
 };
 
 extern Reader *ReaderCreate(char *type);
