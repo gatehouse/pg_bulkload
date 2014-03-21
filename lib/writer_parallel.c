@@ -362,21 +362,18 @@ connect_to_localhost(void)
 	char	sql[1024];
 	char   *host;
 	char	dbName[1024];
-	
-#ifndef _WIN32
-	/* 2012-11-04 This has been shown to be a problem for Windows. It does cause a crash. Not further investigated */
+	char   *UnixSocketDir = NULL;
+
 	/* Also ensure backend isn't confused by this environment var. */
 	setenv("PGCLIENTENCODING", GetDatabaseEncodingName(), 1);
-#endif
-/* 2013-06-28 This does not compile for PostgreSQL 9.3
+
 #ifdef HAVE_UNIX_SOCKETS
 	host = (UnixSocketDir == NULL || UnixSocketDir[0] == '\0') ?
 				DEFAULT_PGSOCKET_DIR :
 				UnixSocketDir;
 #else
-*/
 	host = "localhost";
-//#endif
+#endif
 
 	/* set dbname and disable hostaddr */
 	snprintf(dbName, lengthof(dbName), "dbname='%s' hostaddr=''",

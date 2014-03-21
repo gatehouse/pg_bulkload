@@ -32,7 +32,7 @@ struct Field
 	char   *str;		/**< work buffer */
 };
 
-extern void BinaryParam1(Field **fields, int *nfield, char *value, bool preserve_blanks, bool length_only);
+extern void BinaryParam(Field **fields, int *nfield, char *value, bool preserve_blanks, bool length_only);
 extern int BinaryDumpParam(Field *field, StringInfo buf, int offset);
 extern void BinaryDumpParams(Field *fields, int nfield, StringInfo buf, char *param);
 

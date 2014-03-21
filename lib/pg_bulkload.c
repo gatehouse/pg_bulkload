@@ -37,9 +37,6 @@
 #include "pg_profile.h"
 #include "pg_strutil.h"
 #include "pgut/pgut-be.h"
-#if PG_VERSION_NUM >= 90300
-#include "access/htup_details.h"
-#endif
 
 PG_MODULE_MAGIC;
 
@@ -176,7 +173,6 @@ pg_bulkload(PG_FUNCTION_ARGS)
 	Datum			values[PG_BULKLOAD_COLS];
 	bool			nulls[PG_BULKLOAD_COLS];
 	HeapTuple		result;
-	bool			clear_log = false;
 
 	/* Build a tuple descriptor for our result type */
 	if (get_call_result_type(fcinfo, NULL, &tupdesc) != TYPEFUNC_COMPOSITE)
@@ -205,9 +201,6 @@ pg_bulkload(PG_FUNCTION_ARGS)
 
 	/* initialize reader */
 	ReaderInit(rd);
-
-	if (rd)
-		clear_log = rd->clear_log_on_ok;
 
 	/*
 	 * We need to split PG_TRY block because gcc optimizes if-branches with
@@ -362,8 +355,7 @@ pg_bulkload(PG_FUNCTION_ARGS)
 		"CPU %.2fs/%.2fu sec elapsed %.2f sec\n",
 		start, end, system, user, duration);
 
-	clear_log = clear_log && skip == 0 && count > 0 && parse_errors == 0 && ret.num_dup_new == 0 && ret.num_dup_old == 0;
-	LoggerClose(clear_log);
+	LoggerClose();
 
 	result = heap_form_tuple(tupdesc, values, nulls);
 

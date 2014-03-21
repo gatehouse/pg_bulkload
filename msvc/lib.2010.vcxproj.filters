@@ -59,15 +59,6 @@
     <ClCompile Include="..\lib\pgut\pgut-pthread.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\writer.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\binary.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\writer_binary.c">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\logger.h">

@@ -21,9 +21,6 @@
 #include "pg_strutil.h"
 #include "storage/fd.h"
 #include "writer.h"
-#if PG_VERSION_NUM >= 90300
-#include "access/htup_details.h"
-#endif
 
 #ifndef UINT16_MAX
 #define UINT16_MAX             (65535U)
@@ -339,7 +336,7 @@ BinaryWriterParam(BinaryWriter *self, const char *keyword, char *value)
 	}
 	else if (CompareKeyword(keyword, "OUT_COL"))
 	{
-		BinaryParam1(&self->fields, &self->nfield, value, false, true);
+		BinaryParam(&self->fields, &self->nfield, value, false, true);
 	}
 	else
 		return false;	/* unknown parameter */

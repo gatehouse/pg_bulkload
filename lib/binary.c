@@ -420,7 +420,7 @@ ParseFormat(const char *value, Field *field, bool length_only)
 }
 
 void
-BinaryParam1(Field **fields, int *nfield, char *value, bool preserve_blanks, bool length_only)
+BinaryParam(Field **fields, int *nfield, char *value, bool preserve_blanks, bool length_only)
 {
 	Field  *field;
 

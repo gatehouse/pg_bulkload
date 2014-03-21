@@ -20,7 +20,7 @@ typedef struct Logger	Logger;
 
 extern void CreateLogger(const char *path, bool verbose, bool writer);
 extern void LoggerLog(int elevel, const char *fmt,...);
-extern void LoggerClose(bool delete_log);
+extern void LoggerClose(void);
 
 /*
  * Utilitiy functions

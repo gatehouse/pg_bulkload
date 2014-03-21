@@ -30,10 +30,8 @@ extern PGDLLIMPORT CommandDest		whereToSendOutput;
  * Unfortunately, FrontendProtocol variable is not exported from postgres.a
  * for MSVC. So, we define own entity of the variable and assume protocol
  * version is always 3.
- * 2012-11-04: Notice there was an error below, where 3 was not shifted 
- * and thus was not recognised at the receiver end.
  */
-ProtocolVersion	FrontendProtocol = 3 << 16;
+ProtocolVersion	FrontendProtocol = 3;
 #endif
 
 /* ========================================================================
