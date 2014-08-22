@@ -183,12 +183,12 @@ pg_bulkload(PG_FUNCTION_ARGS)
 
 	pg_rusage_init(&ru0);
 
-	/* must be the super user */
+	/* must be the super user 
 	if (!superuser())
 		ereport(ERROR,
 			(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
 			 errmsg("must be superuser to use pg_bulkload")));
-
+	*/
 	options = PG_GETARG_DATUM(0);
 
 	ccxt = CurrentMemoryContext;
@@ -199,6 +199,14 @@ pg_bulkload(PG_FUNCTION_ARGS)
 
 	/* parse options and create reader and writer */
 	ParseOptions(options, &rd, &wt, ru0.tv.tv_sec);
+
+	/* Notice this check is not correct either */
+	if (!rd || pg_strcasecmp(rd->infile, "stdin") != 0)
+		if (!superuser())
+			ereport(ERROR,
+				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+				 errmsg("must be superuser to use pg_bulkload")));
+
 
 	/* initialize reader */
 	ReaderInit(rd);
