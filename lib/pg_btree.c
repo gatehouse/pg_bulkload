@@ -387,7 +387,7 @@ _bt_mergebuild(Spooler *self, BTSpool *btspool)
 	 * in order to get pre-existing data. We must acquire AccessExclusiveLock
 	 * for the target table for calling FlushRelationBuffer().
 	 */
-	LockRelation(wstate.index, ExclusiveLock); /* AccessExclusiveLock); */
+	LockRelation(wstate.index, AccessExclusiveLock);
 	FlushRelationBuffers(wstate.index);
 	BULKLOAD_PROFILE(&prof_flush);
 

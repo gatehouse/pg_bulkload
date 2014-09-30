@@ -1,27 +1,4 @@
 
-2014-08-18 pg_bulkload
-----------------------
-Still on 3.1.5
-
-Removed requirement for super user for STDIN as per "old" statement from prime developer.
-
-Date: 2009-04-22 05:53
-Sender: Takahiro Itagaki
-"COPY TO/FROM 'path'" requires super user because it can read or write all files in server. For the same reason, pg_bulkload must be executed by super user.
-When we support "pg_bulkload from STDIN", we would allow normal users to use it.
-
-
-As an experiment replaced AccessExclusiveLock with ExclusiveLock in pg_btree.c and writer_buffered.
-
-Typical use case:
-Loading new data with pg_bulkload every minute.
-
-1) Slow SELECT read statement (spanning several minutes)
-2) Quick pg_bulkload (AccessExclusiveLock) blocks
-3) Quick SELECT read statement blocks (due to pg_bulkload)
-
-
-
 
 2014-03-20 pg_bulkload 3.1.5
 ----------------------------
@@ -104,7 +81,7 @@ Select release version and build
 ----------------------
 Added option CLEAR_LOG=TRUE which will delete the log file if the operation is successfull.
 
-This is of value when using multiple bulkload operations on 5 different tables every minute.
+This is of value when using multiple bulkload operations, e.g. 5 different tables every minute.
 
 
 2013-06-29 pg_bulkload

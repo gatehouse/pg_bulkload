@@ -71,7 +71,7 @@ BufferedWriterInit(BufferedWriter *self)
 	if (self->base.max_dup_errors < -1)
 		self->base.max_dup_errors = DEFAULT_MAX_DUP_ERRORS;
 
-	self->base.rel = heap_open(self->base.relid, ExclusiveLock); /* AccessExclusiveLock); */
+	self->base.rel = heap_open(self->base.relid, AccessExclusiveLock);
 	VerifyTarget(self->base.rel, self->base.max_dup_errors);
 
 	self->base.desc = RelationGetDescr(self->base.rel);
@@ -113,7 +113,7 @@ BufferedWriterClose(BufferedWriter *self, bool onError)
 		ret.num_dup_old = self->spooler.dup_old;
 
 		if (self->base.rel)
-			heap_close(self->base.rel, ExclusiveLock); /* AccessExclusiveLock); */
+			heap_close(self->base.rel, AccessExclusiveLock);
 
 		pfree(self);
 	}
