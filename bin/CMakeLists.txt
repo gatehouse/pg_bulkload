@@ -29,7 +29,7 @@ add_executable( pg_bulkload_bin ${pg_bulkload_bin_SOURCES})
 IF (WIN32)
 
 	IF (${PG_VERSION} GREATER 9.2)
-		target_link_libraries(${PROJECT_NAME} ws2_32 libpq libpgport libintl-8 libpgcommon) ##libpgcommon libecpg postgres libpgtypes )
+		target_link_libraries(${PROJECT_NAME} ws2_32 libpq libpgport libintl libpgcommon) ##libpgcommon libecpg postgres libpgtypes )
 	ELSE()
 		target_link_libraries(pg_bulkload_bin ws2_32 libpq libpgport libintl-8 )
 	ENDIF()

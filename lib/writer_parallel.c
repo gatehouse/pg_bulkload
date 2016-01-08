@@ -388,8 +388,10 @@ connect_to_localhost(void)
 	host = "localhost";
 #endif
 
-	/* Also ensure backend isn't confused by this environment var. */
+#ifndef _WIN32
+   /* Also ensure backend isn't confused by this environment var. */
 	setenv("PGCLIENTENCODING", GetDatabaseEncodingName(), 1);
+#endif
 
 	/* set dbname and disable hostaddr */
 	snprintf(dbName, lengthof(dbName), "dbname='%s' hostaddr=''",

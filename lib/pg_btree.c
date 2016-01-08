@@ -398,7 +398,13 @@ _bt_mergebuild(Spooler *self, BTSpool *btspool)
 #if PG_VERSION_NUM >= 90000
 
 	wstate.btws_use_wal = self->use_wal &&
-		XLogIsNeeded() && !RELATION_IS_LOCAL(wstate.index);
+#ifdef _WIN32
+      // This is somehow missing in PostgreSQL 9.5 Windows Build (EnterpriseDB) ?
+      // NB!! The following line causes a wal_level undefined reference. Appears most safe to say yes ?
+#else
+      XLogIsNeeded() &&
+#endif
+      !RELATION_IS_LOCAL(wstate.index);
 #else
 	wstate.btws_use_wal = self->use_wal &&
 		XLogArchivingActive() && !RELATION_IS_LOCAL(wstate.index);

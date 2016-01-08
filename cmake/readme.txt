@@ -1,5 +1,16 @@
 
 
+2016-01-08 pg_bulkload 3.1.6
+-----------------------------------------------
+PostgreSQL 9.5
+On branch VERSION3_1_STABLE
+
+cmake -G "Visual Studio 12 Win64" ..
+
+Needed to change some things in the code possibly due to missing stuff in Windows build of PostgreSQL 9.5
+May possibly no longer compile with previous versions of PostgreSQL.
+
+
 2014-03-20 pg_bulkload 3.1.5
 ----------------------------
 Starting working on porting version 3.1.5. Will attempt to start from 3.1.5 and incorporate own changes.

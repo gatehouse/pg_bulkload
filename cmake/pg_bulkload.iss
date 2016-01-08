@@ -9,9 +9,9 @@
 ;====================================================================
 
 #define BUILDNUMBER "1"
-#define VERSIONNUMBER "v3.1.5"
+#define VERSIONNUMBER "v3.1.6"
 
-#define PG_VERSION "9.3"
+#define PG_VERSION "9.5"
 
 
 [Setup]

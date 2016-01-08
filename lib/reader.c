@@ -516,11 +516,20 @@ CheckerConversion(Checker *checker, char *src)
 			for (i = 0; i < len; i++)
 			{
 				if (src[i] == '\0' || IS_HIGHBIT_SET(src[i]))
-					ereport(ERROR,
-							(errcode(ERRCODE_CHARACTER_NOT_IN_REPERTOIRE),
-					 errmsg("invalid byte value for encoding \"%s\": 0x%02x",
-							pg_enc2name_tbl[PG_SQL_ASCII].name,
-							(unsigned char) src[i])));
+#ifdef _WIN32
+               ereport(ERROR,
+               (errcode(ERRCODE_CHARACTER_NOT_IN_REPERTOIRE),
+               errmsg("invalid byte value for encoding \"%s\": 0x%02x",
+                     // This is somehow missing in PostgreSQL 9.5 Windows Build (EnterpriseDB)
+							"pg_enc2name_tbl missing",
+                     (unsigned char) src[i])));
+#else
+               ereport(ERROR,
+                  (errcode(ERRCODE_CHARACTER_NOT_IN_REPERTOIRE),
+                  errmsg("invalid byte value for encoding \"%s\": 0x%02x",
+                  pg_enc2name_tbl[PG_SQL_ASCII].name,
+                  (unsigned char)src[i])));
+#endif
 			}
 		}
 		return src;
